@@ -10,3 +10,4 @@ yum install python3 -y
 # INSTALL NICE-TO-HAVES
 yum install tmux -y
 yum install vim -y
+yum install htop -y

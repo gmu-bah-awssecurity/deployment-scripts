@@ -14,5 +14,5 @@ apt install -y tmux vim htop
 
 # INSTALL NECESSARY ADDITIONS
 add-apt-repository ppa:mrazavi/openvas
-apt install -y $(cat pkglist)
+apt install -y bro syslog-ng rsync snort fail2ban ufw opendlp openvas9
 

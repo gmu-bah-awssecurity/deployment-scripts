@@ -1,12 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # deployment script for ec2 - high variant
 
-# UPDATE INSTANCE
-yum update -y
+if [ "$EUID" -ne 0 ]; then
+    echo "This script must be run as root."
+    exit
+fi
 
-# INSTALL NECESSARY ADDITIONS
-yum install python3 -y
+# UPDATE INSTANCE
+apt update -y && apt upgrade -y
 
 # INSTALL NICE-TO-HAVES
-yum install tmux -y
-yum install vim -y
+apt install -y tmux vim htop
+
+# INSTALL NECESSARY ADDITIONS
+add-apt-repository ppa:mrazavi/openvas
+apt install -y $(cat pkglist)
+

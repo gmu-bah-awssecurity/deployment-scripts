@@ -1,29 +1,4 @@
 #!/usr/bin/env bash
-# deployment script for ec2 - low variant
-
-if [ "$EUID" -ne 0 ]; then
-    echo "This script must be run as root."
-    exit
-fi
-
-ADDR=$(ip -o -f inet a | grep eth0 | cut -d' ' -f7 | sed "s:/.*::g")
-CIDR=$(ip -o -f inet a | grep eth0 | cut -d' ' -f7)
-SUBNET=$(ip r | grep -v default | cut -d' ' -f1)
-INTERFACE="eth0"
-
-# UPDATE INSTANCE
-apt update -y && apt upgrade -y
-
-# INSTALL NICE-TO-HAVES
-apt install -y tmux vim htop
-
-# INSTALL NECESSARY ADDITIONS
-apt install -y bro broctl rsync snort fail2ban ufw
-
-# CLEAN UP UNUSED PACKAGES
-apt autoremove -y
-
-# snort
 
 #edit local.rules file for sensitive-data rules, local.rules already exists but its empty
 cat << EOF >> /etc/snort/rules/local.rules
@@ -52,24 +27,3 @@ snort -c /etc/snort/snort.conf -T || exit
 
 #command to run snort
 systemctl enable snort --now
-
-
-# bro
-
-cat << EOF > /etc/bro/networks.cfg
-$SUBNET Private IP space
-EOF
-
-broctl install
-broctl cron enable
-broctl deploy
-
-
-# ufw
-
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow ssh
-ufw enablesystemctl enable ufw --now
-
-# f2b, rsync, etc

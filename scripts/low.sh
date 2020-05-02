@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # deployment script for ec2 - low variant
-
+# test
 if [ "$EUID" -ne 0 ]; then
     echo "This script must be run as root."
     exit

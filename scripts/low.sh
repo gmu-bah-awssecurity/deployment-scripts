@@ -10,7 +10,6 @@ INTERFACE=$(ip l | grep "2: " | cut -d' ' -f2 | cut -d: -f1)
 ADDR=$(ip -o -f inet a | grep $INTERFACE | cut -d' ' -f7 | sed "s:/.*::g")
 CIDR=$(ip -o -f inet a | grep $INTERFACE | cut -d' ' -f7)
 SUBNET=$(ip r | grep -v default | cut -d' ' -f1 | grep /)
-FOURTH_IP="172.31.16.58"
 
 # UPDATE INSTANCE
 apt update -y && apt upgrade -y
